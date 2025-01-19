@@ -21,9 +21,11 @@ function clean() {
 
 function build_kernel() {
     export PATH="/home/romiyusnandar/toolchains/proton-clang/bin:$PATH"
-    make -j$(nproc --all) O=out ARCH=arm64 <DEVICE>_defconfig
+    make -j$(nproc --all) O=out ARCH=arm64 gki_defconfig vendor/bengal_GKI.config vendor/spes_GKI.config
     make -j$(nproc --all) ARCH=arm64 O=out \
                           CC=clang \
+                          LLVM=1 \
+                          LLVM_IAS=1 \
                           CROSS_COMPILE=aarch64-linux-gnu- \
                           CROSS_COMPILE_ARM32=arm-linux-gnueabi-
     if [ -e "$KERN_IMG" ] || [ -e "$KERN_IMG2" ]; then
